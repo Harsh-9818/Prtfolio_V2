@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 
 const container = {
@@ -44,6 +45,11 @@ export default function Hero() {
           >
             Get in touch
           </motion.a>
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.96 }}>
+            <Link to="/dashboard" className="btn ghost">
+              Snapshot ↗
+            </Link>
+          </motion.div>
           <motion.a
             href="https://drive.google.com/file/d/1kz5ammuvsJKr0eNCnoVczYIAX8n4e0ym/view"
             target="_blank"
@@ -54,6 +60,7 @@ export default function Hero() {
           >
             Resume ↗
           </motion.a>
+
         </motion.div>
       </motion.div>
     </section>

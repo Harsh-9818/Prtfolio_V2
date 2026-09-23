@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { Routes, Route } from 'react-router-dom'
 import Lenis from 'lenis'
 import 'lenis/dist/lenis.css'
 import Cursor from './components/Cursor.jsx'
@@ -12,6 +13,23 @@ import Skills from './components/Skills.jsx'
 import Contact from './components/Contact.jsx'
 import Footer from './components/Footer.jsx'
 import Education from './components/Education.jsx'
+import Dashboard from './components/Dashboard.jsx'
+
+function Home() {
+  return (
+    <div className="site">
+      <Nav />
+      <Hero />
+      <About />
+      <Experience />
+      <Work />
+      <Skills />
+      <Education />
+      <Contact />
+      <Footer />
+    </div>
+  )
+}
 
 export default function App() {
   useEffect(() => {
@@ -39,17 +57,10 @@ export default function App() {
     <>
       <Cursor />
       <Scene3D />
-      <div className="site">
-        <Nav />
-        <Hero />
-        <About />
-        <Experience />
-        <Work />
-        <Skills />
-        <Education/>
-        <Contact />
-        <Footer />
-      </div>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
     </>
   )
 }
