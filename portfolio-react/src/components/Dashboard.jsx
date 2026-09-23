@@ -29,9 +29,9 @@ const skillGroups = [
 ]
 
 const projects = [
-  { name: 'Velfora', category: 'E-Commerce Platform', description: 'A modern clothing storefront built for fast browsing and a smooth checkout experience.', live: 'https://velforaclothing.vercel.app/', github: 'https://github.com/Harsh-9818' },
-  { name: 'Enhance Through AI', category: 'Generative AI Tool', description: 'An AI-powered image enhancement tool that improves quality and resolution in the browser.', live: 'https://enhancethroughai.vercel.app/', github: 'https://github.com/Harsh-9818' },
-  { name: 'Atelier', category: 'Web Application', description: 'A clean, componentized web application focused on usability and performance.', live: 'https://dev-atelier.vercel.app/', github: 'https://github.com/Harsh-9818' },
+  { name: 'Velfora', category: 'E-Commerce Platform', description: 'A modern clothing storefront built for fast browsing and a smooth checkout experience.', live: 'https://velforaclothing.vercel.app/', github: 'https://github.com/Harsh-9818/Velfora' },
+  { name: 'Enhance Through AI', category: 'Generative AI Tool', description: 'An AI-powered image enhancement tool that improves quality and resolution in the browser.', live: 'https://enhancethroughai.vercel.app/', github: 'https://github.com/Harsh-9818/AI-Image-Enhancer' },
+  { name: 'Atelier', category: 'Web Application', description: 'A clean, componentized web application focused on usability and performance.', live: 'https://dev-atelier.vercel.app/', github: 'https://github.com/Harsh-9818/Atelier' },
 ]
 
 const socials = [
