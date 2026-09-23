@@ -8,6 +8,7 @@ import Work from './components/Work.jsx'
 import Skills from './components/Skills.jsx'
 import Contact from './components/Contact.jsx'
 import Footer from './components/Footer.jsx'
+import Education from './components/Education.jsx'
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
         <Experience />
         <Work />
         <Skills />
+        <Education/>
         <Contact />
         <Footer />
       </div>

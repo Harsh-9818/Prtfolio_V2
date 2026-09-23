@@ -11,9 +11,12 @@ export default function Nav() {
       <div className="nav-inner">
         <div className="logo">HT.</div>
         <ul className="nav-links">
+          <li><a href="#hero  ">Home</a></li>
           <li><a href="#about">About</a></li>
+          <li><a href="#experience">Experience</a></li>
           <li><a href="#work">Work</a></li>
           <li><a href="#skills">Skills</a></li>
+          <li><a href="#education">Education</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
         <a

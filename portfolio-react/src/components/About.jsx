@@ -28,6 +28,7 @@ export default function About() {
     <section id="about" ref={sectionRef}>
       <div className="container">
         <div className="sec-label reveal-about">01 — About</div>
+        <h2 className="sec-title reveal-exp">Know Me</h2>
         <div className="about-grid">
           <div className="glass about-text reveal-about">
             <p>
