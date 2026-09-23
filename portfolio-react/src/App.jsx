@@ -14,6 +14,7 @@ import Contact from './components/Contact.jsx'
 import Footer from './components/Footer.jsx'
 import Education from './components/Education.jsx'
 import Dashboard from './components/Dashboard.jsx'
+import CommandPalette from './components/CommandPalette.jsx'
 
 function Home() {
   return (
@@ -33,12 +34,21 @@ function Home() {
 
 export default function App() {
   useEffect(() => {
+    // Prevent the browser from restoring scroll position on refresh —
+    // Lenis manages scroll itself, so native restoration fights it.
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual'
+    }
+    window.scrollTo(0, 0)
+
     const lenis = new Lenis({
       duration: 1.1,
       easing: (t) => 1 - Math.pow(1 - t, 3),
       smoothWheel: true,
       touchMultiplier: 2,
     })
+
+    lenis.scrollTo(0, { immediate: true })
 
     let rafId
     function raf(time) {
@@ -57,6 +67,7 @@ export default function App() {
     <>
       <Cursor />
       <Scene3D />
+      <CommandPalette />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />

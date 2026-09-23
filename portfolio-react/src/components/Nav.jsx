@@ -11,7 +11,7 @@ export default function Nav() {
       <div className="nav-inner">
         <div className="logo">HT.</div>
         <ul className="nav-links">
-          <li><a href="#hero  ">Home</a></li>
+          <li><a href="#hero">Home</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#experience">Experience</a></li>
           <li><a href="#work">Work</a></li>
@@ -19,14 +19,17 @@ export default function Nav() {
           <li><a href="#education">Education</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
-        <a
-          className="nav-cta"
-          href="https://drive.google.com/file/d/1kz5ammuvsJKr0eNCnoVczYIAX8n4e0ym/view"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Resume ↗
-        </a>
+        <div className="nav-right">
+          <span className="cmdk-badge">⌘K</span>
+          <a
+            className="nav-cta"
+            href="https://drive.google.com/file/d/1kz5ammuvsJKr0eNCnoVczYIAX8n4e0ym/view"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Resume ↗
+          </a>
+        </div>
       </div>
     </motion.nav>
   )
