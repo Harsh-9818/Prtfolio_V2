@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "react-router-dom": "^7.18.4",
     "three-mesh-bvh": "^0.8.0"
   }
 }
