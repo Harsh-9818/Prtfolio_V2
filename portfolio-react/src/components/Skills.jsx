@@ -5,10 +5,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 
 const categories = [
-  { name: 'Languages', items: ['TypeScript', 'JavaScript', 'Python', 'C++', 'HTML5', 'CSS3'] },
+  { name: 'Languages', items: ['JavaScript', 'TypeScript', 'Python', 'C++', 'HTML5', 'CSS3'] },
   { name: 'Frontend', items: ['React', 'Next.js', 'Redux', 'Tailwind', 'Bootstrap', 'Framer Motion'] },
   { name: 'Backend & DB', items: ['Node.js', 'Express', 'MongoDB', 'PostgreSQL', 'MySQL'] },
-  { name: 'Cloud & Tools', items: ['AWS', 'GCP', 'Git', 'Postman', 'Figma', 'Linux'] },
+  { name: 'Cloud & Tools', items: ['AWS', 'GCP', 'Git', 'Github', 'Postman', 'Figma', 'Linux', 'Vercel'] },
 ]
 
 export default function Skills() {
