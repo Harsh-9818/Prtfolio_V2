@@ -40,7 +40,7 @@ export default function Education() {
   return (
     <section id="education" ref={sectionRef}>
       <div className="container">
-        <div className="sec-label reveal-edu">03 — Education</div>
+        <div className="sec-label reveal-edu">05 — Education</div>
         <h2 className="sec-title reveal-edu">Education</h2>
         <div className="projects-grid">
           {education.map((item) => (

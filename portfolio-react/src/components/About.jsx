@@ -41,7 +41,7 @@ export default function About() {
           </div>
           <div className="glass meta-list reveal-about">
             <div className="meta-row"><span>Based in</span><b>Delhi, India</b></div>
-            <div className="meta-row"><span>Focus</span><b>Full-Stack / AI Apps</b></div>
+            <div className="meta-row"><span>Focus</span><b>Full-Stack / Gen AI</b></div>
             <div className="meta-row"><span>Availability</span><b>Remote &amp; Relocation</b></div>
             <div className="meta-row"><span>Status</span><b>Open to work</b></div>
           </div>

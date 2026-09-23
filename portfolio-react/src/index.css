@@ -109,3 +109,5 @@ footer{ padding:28px clamp(20px,5vw,56px); display:flex; justify-content:space-b
   font-size:11px; color:var(--dim); flex-wrap:wrap; gap:8px; border-top:1px solid var(--line); }
 
 @media (prefers-reduced-motion: reduce){ *{ animation:none !important; transition:none !important; } }
+
+

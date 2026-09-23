@@ -14,7 +14,7 @@ const experience = [
   },
   {
     company: 'Atelier',
-    role: 'Fullstack Developer (Freelance)',
+    role: 'Fullstack Developer',
     type: 'Freelance',
     period: '2024 — 2026',
   },

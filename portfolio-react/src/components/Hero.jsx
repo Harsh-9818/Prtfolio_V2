@@ -45,7 +45,7 @@ export default function Hero() {
             Get in touch
           </motion.a>
           <motion.a
-            href="https://www.linkedin.com/in/harshtanwar/"
+            href="https://drive.google.com/file/d/1kz5ammuvsJKr0eNCnoVczYIAX8n4e0ym/view"
             target="_blank"
             rel="noopener noreferrer"
             className="btn ghost"

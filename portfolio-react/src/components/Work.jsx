@@ -49,7 +49,7 @@ export default function Work() {
   return (
     <section id="work" ref={sectionRef}>
       <div className="container">
-        <div className="sec-label reveal-work">02 — Featured work</div>
+        <div className="sec-label reveal-work">03 — Featured work</div>
         <h2 className="sec-title reveal-work">Selected projects</h2>
         <div className="projects-grid">
           {projects.map((p) => (

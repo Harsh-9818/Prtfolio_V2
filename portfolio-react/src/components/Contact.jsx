@@ -25,7 +25,7 @@ export default function Contact() {
     <section id="contact" ref={sectionRef}>
       <div className="container">
         <div className="glass contact-box reveal-contact">
-          <div className="sec-label">04 — Contact</div>
+          <div className="sec-label">06 — Contact</div>
           <h2 className="contact-title">
             Let's build something<br /><span className="accent">worth using.</span>
           </h2>
@@ -34,7 +34,7 @@ export default function Contact() {
               <li><a href="https://github.com/Harsh-9818" target="_blank" rel="noopener noreferrer">GitHub</a></li>
               <li><a href="https://www.linkedin.com/in/harshtanwar/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
               <li><a href="https://twitter.com/ezharsh" target="_blank" rel="noopener noreferrer">Twitter / X</a></li>
-              <li><a href="https://www.linkedin.com/in/harshtanwar/" target="_blank" rel="noopener noreferrer">Resume</a></li>
+              <li><a href="https://drive.google.com/file/d/1kz5ammuvsJKr0eNCnoVczYIAX8n4e0ym/view" target="_blank" rel="noopener noreferrer">Resume</a></li>
             </ul>
             <motion.a
               href="mailto:harsh.tanwar9818@gmail.com"

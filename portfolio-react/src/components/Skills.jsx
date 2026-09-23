@@ -31,7 +31,7 @@ export default function Skills() {
   return (
     <section id="skills" ref={sectionRef}>
       <div className="container">
-        <div className="sec-label reveal-skill">03 — Technical skills</div>
+        <div className="sec-label reveal-skill">04 — Technical skills</div>
         <h2 className="sec-title reveal-skill">What I work with</h2>
         <div className="skills-grid">
           {categories.map((cat) => (
