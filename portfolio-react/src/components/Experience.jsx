@@ -1,0 +1,64 @@
+import { useEffect, useRef } from 'react'
+import { motion } from 'framer-motion'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+
+const experience = [
+  {
+    company: 'Tulip Compression Pvt. Ltd.',
+    role: 'Software Engineer',
+    type: 'Full-time',
+    period: '2026 — Present',
+  },
+  {
+    company: 'Atelier',
+    role: 'Fullstack Developer (Freelance)',
+    type: 'Freelance',
+    period: '2024 — 2026',
+  },
+  
+]
+
+export default function Experience() {
+  const sectionRef = useRef(null)
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from('.reveal-exp', {
+        y: 34,
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power3.out',
+        stagger: 0.12,
+        scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' },
+      })
+    }, sectionRef)
+    return () => ctx.revert()
+  }, [])
+
+  return (
+    <section id="experience" ref={sectionRef}>
+      <div className="container">
+        <div className="sec-label reveal-exp">02 — Experience</div>
+        <h2 className="sec-title reveal-exp">Work experience</h2>
+        <div className="projects-grid">
+          {experience.map((item) => (
+            <motion.div
+              key={item.company}
+              className="glass project-card reveal-exp"
+              whileHover={{ y: -10, scale: 1.02 }}
+              transition={{ type: 'spring', stiffness: 250, damping: 20 }}
+            >
+              <span className="project-cat">{item.type}</span>
+              <h3>{item.company}</h3>
+              <p>{item.role}</p>
+              <p className="exp-period">{item.period}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
