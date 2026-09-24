@@ -15,10 +15,10 @@ export const projects = [
       other: ['JWT', 'bcrypt', 'Multer', 'Cloudinary', 'PayPal Sandbox'],
     },
     architecture: [
-      { id: 'client', label: 'React Client', desc: 'Storefront + Admin UI' },
-      { id: 'api', label: 'Express API', desc: 'Auth, products, orders' },
-      { id: 'db', label: 'MongoDB Atlas', desc: 'Users, products, orders' },
-      { id: 'cloudinary', label: 'Cloudinary', desc: 'Product image storage' },
+      { id: 'client', label: 'React Client', desc: 'Admin UI' },
+      { id: 'api', label: 'Express API', desc: 'Auth, products' },
+      { id: 'db', label: 'MongoDB Atlas', desc: 'Users, products' },
+      { id: 'cloudinary', label: 'Cloudinary', desc: 'Product img storage' },
       { id: 'paypal', label: 'PayPal Sandbox', desc: 'Payment processing' },
     ],
     challenges: [
