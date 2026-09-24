@@ -20,7 +20,7 @@ export default function Nav() {
           <li><a href="#contact">Contact</a></li>
         </ul>
         <div className="nav-right">
-          <span className="cmdk-badge">⌘K</span>
+          <span className="cmdk-badge">Ctrl k</span>
           <a
             className="nav-cta"
             href="https://drive.google.com/file/d/1kz5ammuvsJKr0eNCnoVczYIAX8n4e0ym/view"

@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { useEffect, useRef } from 'react'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import Lenis from 'lenis'
 import 'lenis/dist/lenis.css'
 import Cursor from './components/Cursor.jsx'
@@ -15,6 +15,9 @@ import Footer from './components/Footer.jsx'
 import Education from './components/Education.jsx'
 import Dashboard from './components/Dashboard.jsx'
 import CommandPalette from './components/CommandPalette.jsx'
+import KonamiEasterEgg from './components/KonamiEasterEgg.jsx'
+import CaseStudy from './pages/CaseStudy.jsx'
+import Meta from './pages/Meta.jsx'
 
 function Home() {
   return (
@@ -33,9 +36,10 @@ function Home() {
 }
 
 export default function App() {
+  const lenisRef = useRef(null)
+  const location = useLocation()
+
   useEffect(() => {
-    // Prevent the browser from restoring scroll position on refresh —
-    // Lenis manages scroll itself, so native restoration fights it.
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual'
     }
@@ -47,6 +51,7 @@ export default function App() {
       smoothWheel: true,
       touchMultiplier: 2,
     })
+    lenisRef.current = lenis
 
     lenis.scrollTo(0, { immediate: true })
 
@@ -60,17 +65,26 @@ export default function App() {
     return () => {
       cancelAnimationFrame(rafId)
       lenis.destroy()
+      lenisRef.current = null
     }
   }, [])
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+    lenisRef.current?.scrollTo(0, { immediate: true })
+  }, [location.pathname])
 
   return (
     <>
       <Cursor />
       <Scene3D />
       <CommandPalette />
+      <KonamiEasterEgg />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/work/:slug" element={<CaseStudy />} />
+        <Route path="/meta" element={<Meta />} />
       </Routes>
     </>
   )

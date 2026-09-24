@@ -1,33 +1,11 @@
 import { useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { projects } from '../data/projects.js'
 
 gsap.registerPlugin(ScrollTrigger)
-  
-const projects = [
-  {
-    name: 'Velfora',
-    category: 'E-Commerce Platform',
-    description: 'A modern clothing storefront built for fast browsing and a smooth checkout experience.',
-    live: 'https://velforaclothing.vercel.app/',
-    github: 'https://github.com/Harsh-9818/Velfora',
-  },
-  {
-    name: 'Enhance Through AI',
-    category: 'Generative AI Tool',
-    description: 'An AI-powered image enhancement tool that improves quality and resolution in the browser.',
-    live: 'https://enhancethroughai.vercel.app/',
-    github: 'https://github.com/Harsh-9818/AI-Image-Enhancer',
-  },
-  {
-    name: 'Atelier',
-    category: 'Web Application',
-    description: 'A clean, componentized web application focused on usability and performance.',
-    live: 'https://dev-atelier.vercel.app/',
-    github: 'https://github.com/Harsh-9818/Atelier',
-  },
-]
 
 export default function Work() {
   const sectionRef = useRef(null)
@@ -54,7 +32,7 @@ export default function Work() {
         <div className="projects-grid">
           {projects.map((p) => (
             <motion.div
-              key={p.name}
+              key={p.slug}
               className="glass project-card reveal-work"
               whileHover={{ y: -10, scale: 1.02 }}
               transition={{ type: 'spring', stiffness: 250, damping: 20 }}
@@ -63,6 +41,7 @@ export default function Work() {
               <h3>{p.name}</h3>
               <p>{p.description}</p>
               <div className="project-links">
+                <Link to={`/work/${p.slug}`}>Case study ↗</Link>
                 <a href={p.live} target="_blank" rel="noopener noreferrer">Live demo ↗</a>
                 <a href={p.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a>
               </div>
