@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Lenis from 'lenis'
 import 'lenis/dist/lenis.css'
@@ -35,14 +35,24 @@ function Home() {
   )
 }
 
+const HOME_SCROLL_KEY = 'home-scroll-y'
+
 export default function App() {
   const lenisRef = useRef(null)
+  const scrollYRef = useRef(0)
+  const prevPathRef = useRef(null)
   const location = useLocation()
 
-  useEffect(() => {
+  // Create Lenis once
+  useLayoutEffect(() => {
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual'
     }
+
+    if (window.location.hash) {
+    window.history.replaceState(null, '', window.location.pathname)
+  }
+  
     window.scrollTo(0, 0)
 
     const lenis = new Lenis({
@@ -52,6 +62,11 @@ export default function App() {
       touchMultiplier: 2,
     })
     lenisRef.current = lenis
+
+    function handleScroll({ scroll }) {
+      scrollYRef.current = scroll
+    }
+    lenis.on('scroll', handleScroll)
 
     lenis.scrollTo(0, { immediate: true })
 
@@ -64,14 +79,62 @@ export default function App() {
 
     return () => {
       cancelAnimationFrame(rafId)
+      lenis.off('scroll', handleScroll)
       lenis.destroy()
       lenisRef.current = null
     }
   }, [])
 
-  useEffect(() => {
-    window.scrollTo(0, 0)
-    lenisRef.current?.scrollTo(0, { immediate: true })
+  // Save/restore scroll position on route change
+  useLayoutEffect(() => {
+    const prevPath = prevPathRef.current
+    const lenis = lenisRef.current
+    const goingHome = location.pathname === '/'
+    const cameFromElsewhere = prevPath !== null && prevPath !== location.pathname
+
+    console.log('[scroll debug]', {
+      prevPath,
+      newPath: location.pathname,
+      goingHome,
+      cameFromElsewhere,
+      scrollYRefBeforeSave: scrollYRef.current,
+    })
+
+    // Leaving Home for another route -> remember exactly where we were
+    if (prevPath === '/' && !goingHome) {
+      console.log('[scroll debug] SAVING', scrollYRef.current)
+      sessionStorage.setItem(HOME_SCROLL_KEY, String(scrollYRef.current))
+    }
+
+    if (goingHome && cameFromElsewhere) {
+      // Returning to Home from another page
+      window.scrollTo(0, 0)
+      lenis?.scrollTo(0, { immediate: true })
+
+      const saved = sessionStorage.getItem(HOME_SCROLL_KEY)
+      console.log('[scroll debug] RESTORING, saved value =', saved)
+
+      if (saved !== null) {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            lenis?.resize()
+            const y = Number(saved)
+            console.log(
+              '[scroll debug] applying scroll y =', y,
+              'document height =', document.documentElement.scrollHeight
+            )
+            window.scrollTo(0, y)
+            lenis?.scrollTo(y, { immediate: true })
+          })
+        })
+      }
+    } else {
+      // Fresh load of Home, or any non-Home route -> always top
+      window.scrollTo(0, 0)
+      lenis?.scrollTo(0, { immediate: true })
+    }
+
+    prevPathRef.current = location.pathname
   }, [location.pathname])
 
   return (
