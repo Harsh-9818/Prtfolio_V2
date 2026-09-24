@@ -43,17 +43,19 @@ export default function App() {
   const prevPathRef = useRef(null)
   const location = useLocation()
 
-  // Create Lenis once
+  // Initialize Lenis smooth scroll
   useLayoutEffect(() => {
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual'
     }
 
+    // Strip hash if present to prevent native browser auto-scroll to ID
     if (window.location.hash) {
-    window.history.replaceState(null, '', window.location.pathname)
-  }
-  
-    window.scrollTo(0, 0)
+      window.history.replaceState(null, '', window.location.pathname + window.location.search)
+    }
+
+    // Force instantaneous scroll reset to top
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
 
     const lenis = new Lenis({
       duration: 1.1,
@@ -85,53 +87,41 @@ export default function App() {
     }
   }, [])
 
-  // Save/restore scroll position on route change
+  // Handle route transitions & refresh scroll restoration
   useLayoutEffect(() => {
     const prevPath = prevPathRef.current
     const lenis = lenisRef.current
     const goingHome = location.pathname === '/'
     const cameFromElsewhere = prevPath !== null && prevPath !== location.pathname
 
-    console.log('[scroll debug]', {
-      prevPath,
-      newPath: location.pathname,
-      goingHome,
-      cameFromElsewhere,
-      scrollYRefBeforeSave: scrollYRef.current,
-    })
-
-    // Leaving Home for another route -> remember exactly where we were
+    // Leaving Home for another route -> save scroll position
     if (prevPath === '/' && !goingHome) {
-      console.log('[scroll debug] SAVING', scrollYRef.current)
       sessionStorage.setItem(HOME_SCROLL_KEY, String(scrollYRef.current))
     }
 
     if (goingHome && cameFromElsewhere) {
-      // Returning to Home from another page
-      window.scrollTo(0, 0)
-      lenis?.scrollTo(0, { immediate: true })
-
+      // Returning to Home from another page -> restore position
       const saved = sessionStorage.getItem(HOME_SCROLL_KEY)
-      console.log('[scroll debug] RESTORING, saved value =', saved)
-
       if (saved !== null) {
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
             lenis?.resize()
             const y = Number(saved)
-            console.log(
-              '[scroll debug] applying scroll y =', y,
-              'document height =', document.documentElement.scrollHeight
-            )
             window.scrollTo(0, y)
             lenis?.scrollTo(y, { immediate: true })
           })
         })
       }
     } else {
-      // Fresh load of Home, or any non-Home route -> always top
-      window.scrollTo(0, 0)
+      // Fresh load or page refresh on Home -> enforce top scroll position
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
       lenis?.scrollTo(0, { immediate: true })
+
+      // Double RAF to prevent layout shifts or autofocus in lower components from jumping down
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+        lenis?.scrollTo(0, { immediate: true })
+      })
     }
 
     prevPathRef.current = location.pathname
