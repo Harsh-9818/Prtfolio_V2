@@ -52,10 +52,9 @@ export default function App() {
       window.history.scrollRestoration = 'manual'
     }
 
-    // Disable automatic browser scroll jumping on page load/reload
     const handleBeforeUnload = () => {
       if (window.location.pathname === '/') {
-        window.scrollTo(0, 0)
+        sessionStorage.removeItem(HOME_SCROLL_KEY)
       }
     }
     window.addEventListener('beforeunload', handleBeforeUnload)
@@ -64,12 +63,9 @@ export default function App() {
 
   // 2. Initialize Lenis Smooth Scroll
   useLayoutEffect(() => {
-    // Strip hash before initialization to stop browser deep-linking
     if (window.location.hash) {
       window.history.replaceState(null, '', window.location.pathname + window.location.search)
     }
-
-    window.scrollTo(0, 0)
 
     const lenis = new Lenis({
       duration: 1.1,
@@ -83,8 +79,6 @@ export default function App() {
       scrollYRef.current = scroll
     }
     lenis.on('scroll', handleScroll)
-
-    // Ensure GSAP ScrollTrigger updates with Lenis
     lenis.on('scroll', ScrollTrigger.update)
 
     let rafId
@@ -102,45 +96,41 @@ export default function App() {
     }
   }, [])
 
-  // 3. Handle Route & Reload Scroll Position
+  // 3. Precise Route Scroll Restoration Handler
   useLayoutEffect(() => {
     const prevPath = prevPathRef.current
+    const currentPath = location.pathname
     const lenis = lenisRef.current
-    const goingHome = location.pathname === '/'
-    const cameFromElsewhere = prevPath !== null && prevPath !== location.pathname
 
     // Store position when leaving home
-    if (prevPath === '/' && !goingHome) {
+    if (prevPath === '/' && currentPath !== '/') {
       sessionStorage.setItem(HOME_SCROLL_KEY, String(scrollYRef.current))
     }
 
-    if (goingHome && cameFromElsewhere) {
-      // Restore scroll when returning back from another page
+    if (currentPath === '/' && prevPath !== null && prevPath !== '/') {
+      // Returning to Home from Sub-page
       const saved = sessionStorage.getItem(HOME_SCROLL_KEY)
       if (saved !== null) {
-        setTimeout(() => {
-          lenis?.resize()
-          const y = Number(saved)
-          window.scrollTo(0, y)
-          lenis?.scrollTo(y, { immediate: true })
-        }, 50)
+        const targetY = Number(saved)
+
+        // Wait for DOM & GSAP triggers to finish mounting before scrolling
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            lenis?.resize()
+            ScrollTrigger.refresh()
+            window.scrollTo(0, targetY)
+            lenis?.scrollTo(targetY, { immediate: true })
+          }, 60)
+        })
       }
-    } else {
-      // Hard refresh or direct visit -> Lock to top
+    } else if (currentPath !== '/') {
+      // Direct visit to sub-page (e.g. /dashboard or /work/:slug) -> Reset to top
       window.scrollTo(0, 0)
       lenis?.scrollTo(0, { immediate: true })
-
-      // Run delayed check to override GSAP layout shifts or element focus on Vercel static builds
-      const timer = setTimeout(() => {
-        window.scrollTo(0, 0)
-        lenis?.scrollTo(0, { immediate: true })
-        ScrollTrigger.refresh()
-      }, 100)
-
-      return () => clearTimeout(timer)
     }
 
-    prevPathRef.current = location.pathname
+    // Update path reference
+    prevPathRef.current = currentPath
   }, [location.pathname])
 
   return (
