@@ -1,7 +1,10 @@
-import { useLayoutEffect, useRef } from 'react'
+import { useLayoutEffect, useEffect, useRef } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Lenis from 'lenis'
 import 'lenis/dist/lenis.css'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
 import Cursor from './components/Cursor.jsx'
 import Scene3D from './components/Scene3D.jsx'
 import Nav from './components/Nav.jsx'
@@ -43,19 +46,30 @@ export default function App() {
   const prevPathRef = useRef(null)
   const location = useLocation()
 
-  // Initialize Lenis smooth scroll
-  useLayoutEffect(() => {
+  // 1. Force native scroll restoration off globally on mount
+  useEffect(() => {
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual'
     }
 
-    // Strip hash if present to prevent native browser auto-scroll to ID
+    // Disable automatic browser scroll jumping on page load/reload
+    const handleBeforeUnload = () => {
+      if (window.location.pathname === '/') {
+        window.scrollTo(0, 0)
+      }
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [])
+
+  // 2. Initialize Lenis Smooth Scroll
+  useLayoutEffect(() => {
+    // Strip hash before initialization to stop browser deep-linking
     if (window.location.hash) {
       window.history.replaceState(null, '', window.location.pathname + window.location.search)
     }
 
-    // Force instantaneous scroll reset to top
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+    window.scrollTo(0, 0)
 
     const lenis = new Lenis({
       duration: 1.1,
@@ -70,7 +84,8 @@ export default function App() {
     }
     lenis.on('scroll', handleScroll)
 
-    lenis.scrollTo(0, { immediate: true })
+    // Ensure GSAP ScrollTrigger updates with Lenis
+    lenis.on('scroll', ScrollTrigger.update)
 
     let rafId
     function raf(time) {
@@ -87,41 +102,42 @@ export default function App() {
     }
   }, [])
 
-  // Handle route transitions & refresh scroll restoration
+  // 3. Handle Route & Reload Scroll Position
   useLayoutEffect(() => {
     const prevPath = prevPathRef.current
     const lenis = lenisRef.current
     const goingHome = location.pathname === '/'
     const cameFromElsewhere = prevPath !== null && prevPath !== location.pathname
 
-    // Leaving Home for another route -> save scroll position
+    // Store position when leaving home
     if (prevPath === '/' && !goingHome) {
       sessionStorage.setItem(HOME_SCROLL_KEY, String(scrollYRef.current))
     }
 
     if (goingHome && cameFromElsewhere) {
-      // Returning to Home from another page -> restore position
+      // Restore scroll when returning back from another page
       const saved = sessionStorage.getItem(HOME_SCROLL_KEY)
       if (saved !== null) {
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            lenis?.resize()
-            const y = Number(saved)
-            window.scrollTo(0, y)
-            lenis?.scrollTo(y, { immediate: true })
-          })
-        })
+        setTimeout(() => {
+          lenis?.resize()
+          const y = Number(saved)
+          window.scrollTo(0, y)
+          lenis?.scrollTo(y, { immediate: true })
+        }, 50)
       }
     } else {
-      // Fresh load or page refresh on Home -> enforce top scroll position
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+      // Hard refresh or direct visit -> Lock to top
+      window.scrollTo(0, 0)
       lenis?.scrollTo(0, { immediate: true })
 
-      // Double RAF to prevent layout shifts or autofocus in lower components from jumping down
-      requestAnimationFrame(() => {
-        window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+      // Run delayed check to override GSAP layout shifts or element focus on Vercel static builds
+      const timer = setTimeout(() => {
+        window.scrollTo(0, 0)
         lenis?.scrollTo(0, { immediate: true })
-      })
+        ScrollTrigger.refresh()
+      }, 100)
+
+      return () => clearTimeout(timer)
     }
 
     prevPathRef.current = location.pathname

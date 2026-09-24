@@ -18,28 +18,40 @@ const experience = [
     type: 'Freelance',
     period: '2024 — 2026',
   },
-  
 ]
 
-export default function Experience() {
+export default function Education() {
   const sectionRef = useRef(null)
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
+    let ctx = gsap.context(() => {
       gsap.from('.reveal-exp', {
         y: 34,
         opacity: 0,
         duration: 0.8,
         ease: 'power3.out',
         stagger: 0.12,
-        scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' },
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 85%', // Slightly lower trigger start so it doesn't fire prematurely on mount
+          toggleActions: 'play none none none',
+        },
       })
     }, sectionRef)
-    return () => ctx.revert()
+
+    // Delay a ScrollTrigger refresh so production layout shifts don't cause scroll jumping
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh()
+    }, 100)
+
+    return () => {
+      clearTimeout(timer)
+      ctx.revert()
+    }
   }, [])
 
   return (
-    <section id="experience" ref={sectionRef}>
+    <section id="education" ref={sectionRef}>
       <div className="container">
         <div className="sec-label reveal-exp">02 — Experience</div>
         <h2 className="sec-title reveal-exp">Work experience</h2>
