@@ -20,7 +20,7 @@ const experience = [
   },
 ]
 
-export default function Education() {
+export default function Experience() {
   const sectionRef = useRef(null)
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export default function Education() {
   }, [])
 
   return (
-    <section id="education" ref={sectionRef}>
+    <section id="experience" ref={sectionRef}>
       <div className="container">
         <div className="sec-label reveal-exp">02 — Experience</div>
         <h2 className="sec-title reveal-exp">Work experience</h2>
